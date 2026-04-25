@@ -28,6 +28,7 @@ hf-login:
 
 push-hub:
 	hf upload JUANDMH/Iris-Classification ./App . --repo-type=space --commit-message="Sync App files"
+	hf upload JUANDMH/Iris-Classification requirements.txt requirements.txt --repo-type=space --commit-message="Sync requirements"
 	hf upload JUANDMH/Iris-Classification ./Model Model --repo-type=space --commit-message="Sync Model"
 	hf upload JUANDMH/Iris-Classification ./Results Metrics --repo-type=space --commit-message="Sync Results"
 
