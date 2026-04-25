@@ -11,6 +11,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   train-evaluate:
@@ -33,6 +34,9 @@ jobs:
 
       - name: Train model
         run: make train
+
+      - name: Set up CML
+        uses: iterative/setup-cml@v2
 
       - name: Evaluate model
         env:
