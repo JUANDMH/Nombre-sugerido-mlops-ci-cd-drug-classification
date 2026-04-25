@@ -23,13 +23,13 @@ update-branch:
 	git push origin HEAD:update || echo "No push executed"
 
 hf-login:
-	pip install -U "huggingface_hub[cli]"
-	huggingface-cli login --token $(HF) --add-to-git-credential
+	pip install -U huggingface_hub
+	hf auth login --token $(HF) --add-to-git-credential
 
 push-hub:
-	huggingface-cli upload JUANDMH/Iris-Classification ./App --repo-type=space --commit-message="Sync App files"
-	huggingface-cli upload JUANDMH/Iris-Classification ./Model /Model --repo-type=space --commit-message="Sync Model"
-	huggingface-cli upload JUANDMH/Iris-Classification ./Results /Metrics --repo-type=space --commit-message="Sync Results"
+	hf upload JUANDMH/Iris-Classification ./App . --repo-type=space --commit-message="Sync App files"
+	hf upload JUANDMH/Iris-Classification ./Model Model --repo-type=space --commit-message="Sync Model"
+	hf upload JUANDMH/Iris-Classification ./Results Metrics --repo-type=space --commit-message="Sync Results"
 
 deploy: hf-login push-hub
 
