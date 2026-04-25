@@ -5,6 +5,5 @@ matplotlib
 seaborn
 joblib
 black
-cml
 huggingface_hub
 gradio
