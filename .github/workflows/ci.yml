@@ -1,53 +1,44 @@
-name: CI - Train and Evaluate Model
+name: Continuous Integration
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
+  workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+permissions: write-all
 
 jobs:
-  train-evaluate:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: iterative/setup-cml@v2
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
+      - name: Install Packages
         run: make install
 
-      - name: Format Python files
+      - name: Format
         run: make format
 
-      - name: Train model
+      - name: Train
         run: make train
 
-      - name: Set up CML
-        uses: iterative/setup-cml@v2
-
-      - name: Evaluate model
+      - name: Evaluation
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make eval
 
-      - name: Upload results as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: model-results
-          path: |
-            Results/
-            Model/
-            report.md
+      - name: Update Branch
+        env:
+          NAME: ${{ secrets.USER_NAME }}
+          EMAIL: ${{ secrets.USER_EMAIL }}
+        run: make update-branch USER_NAME=$NAME USER_EMAIL=$EMAIL
