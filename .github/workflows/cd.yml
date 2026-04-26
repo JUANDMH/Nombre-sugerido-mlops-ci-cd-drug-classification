@@ -9,10 +9,25 @@ on:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Packages
+        run: make install
+
+      - name: Train
+        run: make train
+
+      - name: Evaluation
+        run: python evaluate.py
 
       - name: Deployment To Hugging Face
         env:
